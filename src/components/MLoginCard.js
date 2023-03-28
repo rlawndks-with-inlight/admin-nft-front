@@ -5,12 +5,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import $ from 'jquery';
 import axios from 'axios';
 import logo from '../assets/images/test/logo.png'
+import { toast } from 'react-hot-toast';
+import { InputComponent } from './elements/UserContentTemplete';
 const WrapperForm = styled.div`
 width:90%;
 background:#fff;
 max-width:450px;
 height:430px;
-margin:120px auto 0 auto;
+margin:auto;
 border-radius:0.25rem;
 box-shadow:0 2px 4px rgb(15 34 58 / 12%);
 display:flex;
@@ -21,7 +23,7 @@ color:${(props) => props.theme.color.background1};
 font-size:36px;
 width:100%;
 text-align:center;
-margin:24px 0;
+margin:54px auto auto auto;
 font-weight:bold;
 
 `
@@ -54,7 +56,7 @@ font-size:15px;
 `
 const Button = styled.button`
 width:100px;
-margin:49px 49px 0 auto;
+margin:24px 49px 54px auto;
 height:40px;
 border:none;
 background:${(props) => props.theme.color.manager.background1};
@@ -65,12 +67,15 @@ border-radius:0.25rem;
 border: 1px solid transparent;
 @media (max-width: 600px) {
 width:80%;
-margin:49px auto 0 auto;
 }
 `
 const MLoginCard = () => {
     const navigate = useNavigate();
-
+    const defaultObj = {
+        id: '',
+        pw: ''
+    }
+    const [values, setValues] = useState(defaultObj);
     useEffect(() => {
         async function isAdmin() {
             const { data: response } = await axios.get('/api/auth', {
@@ -90,33 +95,28 @@ const MLoginCard = () => {
             }
         }
         isAdmin();
-    
-
     }, [])
     const onLogin = async () => {
-        const { data: response } = await axios.post('/api/loginbyid', {
-            id: $('.id').val(),
-            pw: $('.pw').val()
-        })
-        
+        const { data: response } = await axios.post('/api/loginbyid', values)
+
         if (response.result > 0) {
             await localStorage.setItem('auth', JSON.stringify(response.data));
             if (response.data?.user_level >= 40) {
-                alert(response.message);
+                toast.success(response.message);
                 navigate('/manager/list/user');
 
             } else if (response.data?.user_level >= 30) {
-                alert(response.message);
+                toast.success(response.message);
                 navigate('/manager/list/strategy');
-            }else{
-                alert("아이디 또는 비밀번호를 확인해주세요.");
+            } else {
+                toast.error("아이디 또는 비밀번호를 확인해주세요.");
                 navigate("/")
             }
         }
     }
     const onKeyPressId = (e) => {
         if (e.key == 'Enter') {
-          $('.pw').focus();
+            $('.pw').focus();
         }
     }
     const onKeyPressPw = (e) => {
@@ -124,16 +124,39 @@ const MLoginCard = () => {
             onLogin();
         }
     }
+    const handleChange = (value, key) => {
+        setValues({ ...values, [key]: value });
+    }
     return (
         <>
             <WrapperForm onSubmit={onLogin} id='login_form'>
                 <Title>
-                    <img src={logo} alt="#" style={{ height: '50px', width: 'auto' }} />
+                    <img src={logo} alt="#" style={{ height: '75px', width: 'auto' }} />
                 </Title>
-                <CategoryName>ID</CategoryName>
-                <Input placeholder='input id' type={'text'} className='id' onKeyPress={onKeyPressId} />
-                <CategoryName>PW</CategoryName>
-                <Input placeholder='input password' type={'password'} className='pw' onKeyPress={onKeyPressPw} />
+                <div style={{ width: '356px', margin: 'auto' }}>
+                    <InputComponent
+                        label={'아이디를 입력해주세요.'}
+                        input_type={{
+                            placeholder: '',
+                        }}
+                        class_name='id'
+                        onKeyPress={() => $('.pw').focus()}
+                        onChange={(e) => handleChange(e, 'id')}
+                        style={{ width: '320px' }}
+                    />
+                    <InputComponent
+                        label={'비밀번호를 입력해주세요.'}
+                        input_type={{
+                            placeholder: '',
+                            type: 'password'
+                        }}
+                        class_name='pw'
+                        onKeyPress={onLogin}
+                        onChange={(e) => handleChange(e, 'pw')}
+                        value={values?.pw}
+                        isSeeButton={true}
+                    />
+                </div>
                 <Button onClick={onLogin}>Login</Button>
             </WrapperForm>
         </>

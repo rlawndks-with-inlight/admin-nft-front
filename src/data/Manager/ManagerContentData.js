@@ -16,7 +16,7 @@ export const needTwoImage = ['issue', 'theme', 'feature'];
 export const zSidebar = [
     sidebarContentFormat('회원관리', [
         sidebarObjListFormat('회원관리', '/manager/list/user', 40, ['/manager/list/user']),//edit
-        sidebarObjListFormat('회원통계', '/manager/list/user_statistics', 40, ['/manager/list/user_statistics']),//edit
+        //sidebarObjListFormat('회원통계', '/manager/list/user_statistics', 40, ['/manager/list/user_statistics']),//edit
     ], <BsPerson />),
     sidebarContentFormat('기본설정', [
         sidebarObjListFormat('상단띠배너', '/manager/edit/common_setting/1', 40, ['/manager/edit/common_setting/1']),//list
@@ -25,6 +25,7 @@ export const zSidebar = [
     ], <AiTwotoneSetting />),
     sidebarContentFormat('상품관리', [
         sidebarObjListFormat('상품카테고리관리', '/manager/list/item_category', 40, ['/manager/list/item_category']),//list
+        sidebarObjListFormat('상품속성관리', '/manager/list/item_property', 40, ['/manager/list/item_property']),//list
         sidebarObjListFormat('상품관리', '/manager/list/item', 40, ['/manager/list/item']),//list
     ], <AiTwotoneSetting />),
     sidebarContentFormat('게시판관리', [
@@ -77,7 +78,23 @@ export const objManagerListContent = {
         [],
         true,
         true,
-        ),
+    ),
+    item_property: sidebarObjFormat(
+        '상품 속성 리스트',
+        'item_property',
+        [
+            columnObjFormat('아이콘', '', 'img', 'img_src'),
+            columnObjFormat('속성명', '', 'text', 'name'),
+            columnObjFormat('노출여부', '', 'status', 'status'),
+            columnObjFormat('생성일', '', 'text', 'date'),
+            columnObjFormat('노출여부', '', 'status', 'status'),
+            columnObjFormat('수정', '', 'edit', 'edit'),
+            columnObjFormat('삭제', '', 'delete', 'delete'),
+        ],
+        [],
+        true,
+        true,
+    ),
     item: sidebarObjFormat(
         '상품 리스트',
         'item',
@@ -287,6 +304,19 @@ export const objManagerEditContent = {
         columns: [//img, select, input, 
             [
                 editColumnObjFormat('메인이미지', 'img', { field_name: 'content' }, 'img_src'),
+            ],
+            [
+                editColumnObjFormat('카테고리명', 'input', { placeholder: '카테고리명을 입력해 주세요.' }, 'name'),
+            ],
+        ],
+    },
+    item_property: {
+        schema: 'item_property',
+        breadcrumb: '상품속성',
+        add_list: [],
+        columns: [//img, select, input, 
+            [
+                editColumnObjFormat('아이콘', 'img', { field_name: 'content' }, 'img_src'),
             ],
             [
                 editColumnObjFormat('카테고리명', 'input', { placeholder: '카테고리명을 입력해 주세요.' }, 'name'),

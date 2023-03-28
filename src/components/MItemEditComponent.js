@@ -337,12 +337,12 @@ const MItemEditComponent = (props) => {
                                                                     <img src={imgUrlObj[`${item.class_name}`]} alt="#"
                                                                         style={{
                                                                             width: 'auto', height: '8rem',
-                                                                            margin: '2rem'
+                                                                            margin: 'auto'
                                                                         }} />
                                                                 </>
                                                                 :
                                                                 <>
-                                                                    <AiFillFileImage style={{ margin: '4rem', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
+                                                                    <AiFillFileImage style={{ margin: 'auto', fontSize: '4rem', color: `${theme.color.manager.font3}` }} />
                                                                 </>}
                                                         </ImageContainer>
                                                         <div>
