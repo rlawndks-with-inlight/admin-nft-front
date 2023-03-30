@@ -19,9 +19,10 @@ export const zSidebar = [
         //sidebarObjListFormat('회원통계', '/manager/list/user_statistics', 40, ['/manager/list/user_statistics']),//edit
     ], <BsPerson />),
     sidebarContentFormat('기본설정', [
-        sidebarObjListFormat('상단띠배너', '/manager/edit/common_setting/1', 40, ['/manager/edit/common_setting/1']),//list
-        sidebarObjListFormat('메인배너', '/manager/edit/home_setting/1', 40, ['/manager/edit/home_setting/1']),//list
-        sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
+       // sidebarObjListFormat('상단띠배너', '/manager/edit/common_setting/1', 40, ['/manager/edit/common_setting/1']),//list
+       sidebarObjListFormat('메인배너', '/manager/edit/home_setting/1', 40, ['/manager/edit/home_setting/1']),//list
+       sidebarObjListFormat('하단배너', '/manager/edit/home_bottom/1', 40, ['/manager/edit/home_bottom/1']),//list
+       sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
     ], <AiTwotoneSetting />),
     sidebarContentFormat('상품관리', [
         sidebarObjListFormat('상품카테고리관리', '/manager/list/item_category', 40, ['/manager/list/item_category']),//list
@@ -64,7 +65,6 @@ export const objManagerListContent = {
         [
             columnObjFormat('메인이미지', '', 'img', 'img_src'),
             columnObjFormat('카테고리명', '', 'text', 'name'),
-            columnObjFormat('노출여부', '', 'status', 'status'),
             columnObjFormat('생성일', '', 'text', 'date'),
             columnObjFormat('노출여부', '', 'status', 'status'),
             columnObjFormat('수정', '', 'edit', 'edit'),
@@ -78,9 +78,7 @@ export const objManagerListContent = {
         '상품 속성 리스트',
         'item_property',
         [
-            columnObjFormat('아이콘', '', 'img', 'img_src'),
             columnObjFormat('속성명', '', 'text', 'name'),
-            columnObjFormat('노출여부', '', 'status', 'status'),
             columnObjFormat('생성일', '', 'text', 'date'),
             columnObjFormat('노출여부', '', 'status', 'status'),
             columnObjFormat('수정', '', 'edit', 'edit'),
@@ -311,16 +309,13 @@ export const objManagerEditContent = {
         add_list: [],
         columns: [//img, select, input, 
             [
-                editColumnObjFormat('아이콘', 'img', { field_name: 'content' }, 'img_src'),
-            ],
-            [
-                editColumnObjFormat('카테고리명', 'input', { placeholder: '카테고리명을 입력해 주세요.' }, 'name'),
+                editColumnObjFormat('속성명', 'input', { placeholder: '속성명을 입력해 주세요.' }, 'name'),
             ],
         ],
     },
     item: {
         schema: 'item',
-        breadcrumb: '상품카테고리',
+        breadcrumb: '상품',
         add_list: [],
         columns: [//img, select, input, 
             [
@@ -393,36 +388,7 @@ export const objManagerEditContent = {
             ],
         ],
     },
-    master: {
-        schema: 'user',
-        breadcrumb: '전문가',
-        add_list: [{ key: 'user_level', value: 30 }],
-        columns: [//img, select, input, 
-            [
-                editColumnObjFormat('아이디', 'input', {}, 'id'),
-                editColumnObjFormat('비밀번호', 'input', { placeholder: '****', type: 'password' }, 'pw'),
-            ],
-            [
-                editColumnObjFormat('이름', 'input', {}, 'name'),
-                editColumnObjFormat('닉네임(채널명)', 'input', {}, 'nickname'),
-            ],
-            [
-                editColumnObjFormat('프로필이미지  (여백없이 200x200)', 'img', { field_name: 'master', title_width: '100%' }, 'profile_img'),
-            ],
-            [
-                editColumnObjFormat('서브프로필이미지 (여백없이 200x200)', 'img', { field_name: 'master2', title_width: '100%' }, 'sub_profile_img'),
-            ],
-            [
-                editColumnObjFormat('이력', 'textarea', {}, 'record_note'),
-            ],
-            [
-                editColumnObjFormat('소개 이미지', 'img', { field_name: 'content3' }, 'introduce_img'),
-            ],
-            [
-                editColumnObjFormat('소개', 'editor', {}, 'introduce_note'),
-            ],
-        ],
-    },
+   
     common_setting: {
         schema: 'setting',
         breadcrumb: '상단띠배너',
@@ -514,46 +480,19 @@ export const objManagerEditContent = {
             ],
         ],
     },
-    enrolment_setting: {
+    home_bottom: {
         schema: 'setting',
-        breadcrumb: '수강신청배너',
+        breadcrumb: '홈 하단 배너',
         add_list: [],
         columns: [//img, select, input, 
             [
-                editColumnObjFormat('슬라이드 이미지 1 (500x125)', 'img', { field_name: 'content1' }, 'enrolment_banner_img_1')
+                editColumnObjFormat('홈 아래 이미지 1 (500x500)', 'img', { field_name: 'content1' }, 'home_bottom_img_1')
             ],
             [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'enrolment_banner_link_1'),
+                editColumnObjFormat('홈 아래 이미지 2 (500x500)', 'img', { field_name: 'content2' }, 'home_bottom_img_2')
             ],
             [
-                editColumnObjFormat('슬라이드 이미지 2 (500x125)', 'img', { field_name: 'content2' }, 'enrolment_banner_img_2')
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'enrolment_banner_link_2'),
-            ],
-            [
-                editColumnObjFormat('슬라이드 이미지 3 (500x125)', 'img', { field_name: 'content3' }, 'enrolment_banner_img_3')
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'enrolment_banner_link_3'),
-            ],
-            [
-                editColumnObjFormat('슬라이드 이미지 4 (500x125)', 'img', { field_name: 'content4' }, 'enrolment_banner_img_4')
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'enrolment_banner_link_4'),
-            ],
-            [
-                editColumnObjFormat('슬라이드 이미지 5 (500x125)', 'img', { field_name: 'content5' }, 'enrolment_banner_img_5')
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'enrolment_banner_link_5'),
-            ],
-            [
-                editColumnObjFormat('하단 배너 (600x150)', 'img', { field_name: 'content' }, 'enrolment_bottom_banner'),
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'enrolment_bottom_banner_link'),
+                editColumnObjFormat('홈 아래 이미지 3 (500x500)', 'img', { field_name: 'content3' }, 'home_bottom_img_3')
             ],
         ],
     },
