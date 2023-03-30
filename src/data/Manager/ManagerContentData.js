@@ -31,14 +31,14 @@ export const zSidebar = [
     ], <AiTwotoneSetting />),
     sidebarContentFormat('게시판관리', [
         sidebarObjListFormat('문의관리', '/manager/list/request', 40, ['/manager/list/request']),//list
-        sidebarObjListFormat('FAQ관리', '/manager/list/faq', 40, ['/manager/list/faq']),//list
-        sidebarObjListFormat('이벤트관리', '/manager/list/event', 40, ['/manager/list/event']),//list
-        sidebarObjListFormat('공지사항', '/manager/list/notice', 40, ['/manager/list/notice']),//list
-        sidebarObjListFormat('후기관리', '/manager/list/review', 40, ['/manager/list/review']),//list
+        // sidebarObjListFormat('FAQ관리', '/manager/list/faq', 40, ['/manager/list/faq']),//list
+        // sidebarObjListFormat('이벤트관리', '/manager/list/event', 40, ['/manager/list/event']),//list
+        // sidebarObjListFormat('공지사항', '/manager/list/notice', 40, ['/manager/list/notice']),//list
+        // sidebarObjListFormat('후기관리', '/manager/list/review', 40, ['/manager/list/review']),//list
     ], <AiOutlineUnorderedList />),
-    sidebarContentFormat('푸시알림', [
-        sidebarObjListFormat('푸시알림', '/manager/list/alarm', 40, ['/manager/list/alarm']),//list
-    ], <BsAlarm />),
+    // sidebarContentFormat('푸시알림', [
+    //     sidebarObjListFormat('푸시알림', '/manager/list/alarm', 40, ['/manager/list/alarm']),//list
+    // ], <BsAlarm />),
 ];
 
 export const objManagerListContent = {
