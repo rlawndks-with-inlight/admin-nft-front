@@ -167,10 +167,10 @@ const MUserOrganizationChart = () => {
                     lineWidth={'1px'}
                     lineColor={theme.color.background1}
                     lineBorderRadius={'10px'}
-                    label={<StyledNode style={{ cursor: 'pointer', border: `2px solid ${(allTreeList[topUser?.depth + 1][topUser?.pk] && allTreeList[topUser?.depth + 1][topUser?.pk].length > 0) ? `${theme.color.background1}` : `${theme.color.red}`}`, minWidth: '54px' }} onClick={() => { onClickUser(topUser?.pk, topUser?.depth) }}>
+                    label={<StyledNode style={{ cursor: 'pointer', border: `2px solid ${theme.color.background1}`, minWidth: '54px' }} onClick={() => { onClickUser(topUser?.pk, topUser?.depth) }}>
                         <div style={{ fontSize: theme.size.font5 }}>{`${topUser?.id}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${topUser?.name}`}</div>
-                        <div style={{ fontSize: theme.size.font5 }}>{`${getUserLevelByNumber(topUser?.user_level)}`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${getUserLevelByNumber(topUser?.user_level??0)}`}</div>
                     </StyledNode>}
                 >
                     {tree}
