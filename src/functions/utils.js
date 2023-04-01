@@ -153,7 +153,27 @@ export const numberToCategory = (num) => {
     }
 
 }
-
+export const getUserLevelByNumber = (num) => {
+    if (num == -10) {
+        return "불량회원";
+    } else if (num == 0) {
+        return "일반유저";
+    } else if (num == 10) {
+        return "대리점";
+    } else if (num == 15) {
+        return "총판";
+    } else if (num == 20) {
+        return "지사";
+    } else if (num == 25) {
+        return "본사";
+    } else if (num == 40) {
+        return "관리자";
+    } else if (num == 50) {
+        return "개발자";
+    } else {
+        return "불량회원"
+    }
+}
 export const regExp = (type, str) => {//id,pw,nickname,name
     let reg = undefined;
     if (type == 'id') {

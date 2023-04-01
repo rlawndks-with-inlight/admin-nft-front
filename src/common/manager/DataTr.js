@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 import styled from 'styled-components'
-import { backUrl } from '../../data/Data'
+import { backUrl, objManagerListContent } from '../../data/Data'
 import { BiEditAlt } from 'react-icons/bi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { CgToggleOn, CgToggleOff } from 'react-icons/cg'
@@ -15,7 +15,8 @@ import { commarNumber, numberToCategory } from '../../functions/utils'
 import { useEffect } from 'react'
 import { GiCancel } from 'react-icons/gi'
 import $ from 'jquery'
-import {RiMoneyDollarCircleLine} from 'react-icons/ri'
+import { RiMoneyDollarCircleLine } from 'react-icons/ri'
+import { returnColumn } from './ColumnType'
 const Tr = styled.tr`
 box-shadow:1px 1px 1px #00000029;
 font-size:${props => props.theme.size.font5};
@@ -102,61 +103,20 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, obj, op
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
 
-
-    const getLoginTypeByNumber = (num) => {
-        if (num == 0) {
-            return "일반";
-        } else if (num == 1) {
-            return "카카오";
-        } else if (num == 2) {
-            return "네이버";
-        } else if (num == 3) {
-            return "애플";
-        }
-    }
-    const getUserLevelByNumber = (num) => {
-        if (num == -10) {
-            return "불량회원";
-        } else if (num == 0) {
-            return "일반유저";
-        } else if (num == 30) {
-            return "전문가";
-        } else if (num == 40) {
-            return "관리자";
-        } else if (num == 50) {
-            return "개발자";
-        } else {
-            return "불량회원"
-        }
-    }
-    const getPostCategoryNameByEng = (str) => {
-        if (str == 'oneword') {
-            return "하루1단어";
-        } else if (str == 'oneevent') {
-            return "하루1종목";
-        } else if (str == 'theme') {
-            return "핵심테마";
-        } else if (str == 'strategy') {
-            return "전문가칼럼";
-        } else if (str == 'issue') {
-            return "핵심이슈";
-        } else if (str == 'feature') {
-            return "특징주";
-        } else if (str == 'video') {
-            return "핵심비디오";
-        } else if (str == 'notice') {
-            return "공지사항";
-        } else {
-            return "---";
-        }
-    }
     return (
         <>
             <Tr ref={obj.is_move ? ref : null} data-handler-id={handlerId} className='manager-data-tr'>
                 {column.map((col, index) => (
                     <>
-
-                        {col.type == 'text' ?
+                        <Td style={{ width: `${col.width}%` }}>
+                            {returnColumn(data, col.type, col.column, true, schema, {
+                                navigate,
+                                deleteItem,
+                                changeStatus,
+                                opTheTopItem,
+                            })}
+                        </Td>
+                        {/* {col.type == 'text' ?
                             <>
                                 <Td style={{ width: `${col.width}%` }}>{data[`${col.column}`] ?? "---"}</Td>
                             </>
@@ -307,10 +267,10 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, obj, op
                             :
                             <>
                             </>}
-                            {col.type == 'user_pay_list' ?
+                        {col.type == 'user_pay_list' ?
                             <>
                                 <Td style={{ width: `${col.width}%`, fontSize: '20px' }}>
-                                    <RiMoneyDollarCircleLine style={{ cursor: 'pointer', color: '#546de5' }} onClick={() => navigate(`/manager/list/subscribe/${data.pk}`,{state:{breadcrumb:`${data?.id} 회원 결제 내역`}})} />
+                                    <RiMoneyDollarCircleLine style={{ cursor: 'pointer', color: '#546de5' }} onClick={() => navigate(`/manager/list/subscribe/${data.pk}`, { state: { breadcrumb: `${data?.id} 회원 결제 내역` } })} />
                                 </Td>
                             </>
                             :
@@ -367,7 +327,7 @@ const DataTr = ({ id, data, index, moveCard, column, schema, list, sort, obj, op
                             </>
                             :
                             <>
-                            </>}
+                            </>} */}
 
                     </>
                 ))}

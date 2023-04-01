@@ -16,6 +16,7 @@ import MPayEdit from '../pages/Manager/MPayEdit';
 import MPayCancelEdit from '../pages/Manager/MPayCancelEdit';
 import MPayExcelEdit from '../pages/Manager/MPayExcelEdit';
 import MProductEdit from '../pages/Manager/MProductEdit';
+import MUserOrganizationChart from '../pages/Manager/MUserOrganizationChart';
 
 const zManagerRoute = [
     { link: '/', element: <MLogin />, title: "관리자로그인" },
@@ -33,6 +34,7 @@ const zManagerRoute = [
     { link: '/manager/edit/setting', element: <MSettingEdit />, title: "환경설정" },
     { link: '/manager/edit/pay_excel', element: <MPayExcelEdit />, title: "" },
     { link: '/manager/edit/item', element: <MProductEdit />, title: "" },
+    { link: '/manager/user_organization_chart', element: <MUserOrganizationChart />, title: "" },
     
     { link: '/manager/edit/:table/:pk', element: <MItemEdit />, title: "" },
     { link: '/manager/list/:table/:pk', element: <MItemList />, title: "" },

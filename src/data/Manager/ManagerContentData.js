@@ -16,13 +16,14 @@ export const needTwoImage = ['issue', 'theme', 'feature'];
 export const zSidebar = [
     sidebarContentFormat('회원관리', [
         sidebarObjListFormat('회원관리', '/manager/list/user', 40, ['/manager/list/user']),//edit
+        sidebarObjListFormat('회원조직도(레벨별)', '/manager/user_organization_chart', 40, ['/manager/user_organization_chart']),
         //sidebarObjListFormat('회원통계', '/manager/list/user_statistics', 40, ['/manager/list/user_statistics']),//edit
     ], <BsPerson />),
     sidebarContentFormat('기본설정', [
-       // sidebarObjListFormat('상단띠배너', '/manager/edit/common_setting/1', 40, ['/manager/edit/common_setting/1']),//list
-       sidebarObjListFormat('메인배너', '/manager/edit/home_setting/1', 40, ['/manager/edit/home_setting/1']),//list
-       sidebarObjListFormat('하단배너', '/manager/edit/home_bottom/1', 40, ['/manager/edit/home_bottom/1']),//list
-       sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
+        // sidebarObjListFormat('상단띠배너', '/manager/edit/common_setting/1', 40, ['/manager/edit/common_setting/1']),//list
+        sidebarObjListFormat('메인배너', '/manager/edit/home_setting/1', 40, ['/manager/edit/home_setting/1']),//list
+        sidebarObjListFormat('하단배너', '/manager/edit/home_bottom/1', 40, ['/manager/edit/home_bottom/1']),//list
+        sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
     ], <AiTwotoneSetting />),
     sidebarContentFormat('NFT관리', [
         sidebarObjListFormat('지갑관리', '/manager/list/wallet', 40, ['/manager/list/wallet']),//list
@@ -52,6 +53,7 @@ export const objManagerListContent = {
             columnObjFormat('닉네임', '', 'text', 'nickname'),
             columnObjFormat('폰번호', '', 'text', 'phone'),
             columnObjFormat('접근권한', '', 'level', 'user_level'),
+            columnObjFormat('추천인아이디', '', 'text', 'parent_id'),
             columnObjFormat('가입일', '', 'text', 'date'),
             columnObjFormat('로그인시간', '', 'text', 'last_login'),
             columnObjFormat('수정', '', 'edit', 'edit'),
@@ -105,21 +107,21 @@ export const objManagerListContent = {
         true,
         false,
         '100%'),
-        wallet: sidebarObjFormat(
-            '지갑 리스트',
-            'wallet',
-            [
-                columnObjFormat('메인이미지', '', 'img', 'img_src'),
-                columnObjFormat('지갑명', '', 'text', 'name'),
-                columnObjFormat('노출여부', '', 'status', 'status'),
-                columnObjFormat('생성일', '', 'text', 'date'),
-                columnObjFormat('수정', '', 'edit', 'edit'),
-                columnObjFormat('삭제', '', 'delete', 'delete'),
-            ],
-            [],
-            true,
-            false,
-            '100%'),
+    wallet: sidebarObjFormat(
+        '지갑 리스트',
+        'wallet',
+        [
+            columnObjFormat('메인이미지', '', 'img', 'img_src'),
+            columnObjFormat('지갑명', '', 'text', 'name'),
+            columnObjFormat('노출여부', '', 'status', 'status'),
+            columnObjFormat('생성일', '', 'text', 'date'),
+            columnObjFormat('수정', '', 'edit', 'edit'),
+            columnObjFormat('삭제', '', 'delete', 'delete'),
+        ],
+        [],
+        true,
+        false,
+        '100%'),
     user_statistics: sidebarObjFormat(
         '회원 통계',
         'user_statistics',
@@ -417,7 +419,7 @@ export const objManagerEditContent = {
             ],
         ],
     },
-   
+
     common_setting: {
         schema: 'setting',
         breadcrumb: '상단띠배너',

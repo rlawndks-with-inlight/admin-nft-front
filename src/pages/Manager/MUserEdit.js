@@ -21,6 +21,8 @@ import quillEmoji from "react-quill-emoji";
 import "react-quill-emoji/dist/quill-emoji.css";
 import DaumPostcode from 'react-daum-postcode';
 import Modal from '../../components/Modal';
+import { toast } from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const Table = styled.table`
 font-size:12px;
@@ -50,6 +52,7 @@ const MUserEdit = () => {
     const [isSelectAddress, setIsSelectAddress] = useState(false);
     const [managerNote, setManagerNote] = useState("");
     const [isSeePostCode, setIsSeePostCode] = useState(false);
+    const [userLevel, setUserLevel] = useState(0);
 
     useEffect(() => {
 
@@ -62,10 +65,11 @@ const MUserEdit = () => {
                 $('.nickname').val(response.data.nickname)
                 $('.phone').val(response.data.phone)
                 $('.level').val(response.data.user_level)
+                setUserLevel(response.data.user_level)
                 $('.address').val(response.data.address)
                 $('.address_detail').val(response.data.address_detail)
                 $('.zip_code').val(response.data.zip_code)
-
+                $('.parent_id').val(response.data.parent_id)
             }
             settingJquery();
         }
@@ -119,26 +123,42 @@ const MUserEdit = () => {
     const editUser = async () => {
         if (!$(`.id`).val() || !$(`.name`).val() || !$(`.nickname`).val() || !$(`.phone`).val() || (!$(`.pw`).val() && params.pk == 0)) {
             alert('필요값이 비어있습니다.');
+            return;
+        }
+        if (userLevel == 25 || userLevel == 40) {
+
         } else {
-            let obj = {
-                id: $(`.id`).val(),
-                pw: $(`.pw`).val(),
-                name: $(`.name`).val(),
-                nickname: $(`.nickname`).val(),
-                phone: $(`.phone`).val(),
-                user_level: $(`.level`).val(),
-                address: $(`.address`).val(),
-                address_detail: $(`.address_detail`).val(),
-                zip_code: $(`.zip_code`).val(),
-                account_holder: $(`.account_holder`).val(),
-                bank_name: $(`.bank_name`).val(),
-                account_number: $(`.account_number`).val(),
-                manager_note: managerNote,
+            if (!$('.parent_id').val()) {
+                alert('필요값이 비어있습니다.');
+                return;
             }
-            if (params?.pk > 0) {
-                obj['pk'] = params.pk;
-            }
-            if (window.confirm(`${params.pk == 0 ? '추가하시겠습니까?' : '수정하시겠습니까?'}`)) {
+        }
+        let obj = {
+            id: $(`.id`).val(),
+            pw: $(`.pw`).val(),
+            name: $(`.name`).val(),
+            nickname: $(`.nickname`).val(),
+            phone: $(`.phone`).val(),
+            user_level: $(`.level`).val(),
+            address: $(`.address`).val(),
+            address_detail: $(`.address_detail`).val(),
+            zip_code: $(`.zip_code`).val(),
+            account_holder: $(`.account_holder`).val(),
+            bank_name: $(`.bank_name`).val(),
+            account_number: $(`.account_number`).val(),
+            parent_id: $(`.parent_id`).val(),
+            manager_note: managerNote,
+        }
+        if (params?.pk > 0) {
+            obj['pk'] = params.pk;
+        }
+        Swal.fire({
+            title: `${params.pk == 0 ? '추가하시겠습니까?' : '수정하시겠습니까?'}`,
+            showCancelButton: true,
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
                 const { data: response } = await axios.post(`/api/${params?.pk == 0 ? 'add' : 'update'}user`, obj);
                 if (response?.result > 0) {
                     alert(response.message);
@@ -147,9 +167,7 @@ const MUserEdit = () => {
                     alert(response.message);
                 }
             }
-
-        }
-
+        })
 
     }
     const getAddressByText = async () => {
@@ -203,24 +221,43 @@ const MUserEdit = () => {
                     </Col>
                     <Col>
                         <Title style={{ margintop: '32px' }}>유저레벨</Title>
-                        <Select className='level'>
+                        <Select className='level'
+                            onChange={(e) => setUserLevel(e.target.value)}
+                        >
                             <option value={0}>일반유저</option>
-                            <option value={-10}>불량회원</option>
                             <option value={40}>관리자</option>
+                            <option value={25}>본사</option>
+                            <option value={20}>지사</option>
+                            <option value={15}>총판</option>
+                            <option value={10}>대리점</option>
+                            <option value={-10}>불량회원</option>
                         </Select>
                     </Col>
                 </Row>
+                {userLevel == 25 || userLevel == 40 ?
+                    <>
+                    </>
+                    :
+                    <>
+                        <Row>
+                            <Col>
+                                <Title style={{ margintop: '32px' }}>추천인아이디</Title>
+                                <Input className='parent_id' />
+                            </Col>
+                        </Row>
+                    </>}
+
                 <Col>
                     <Title>우편번호</Title>
                     <div style={{ display: 'flex' }}>
-                        <Input style={{ margin: '12px 0 6px 24px' }} className='zip_code'  placeholder="예) 12345" />
+                        <Input style={{ margin: '12px 0 6px 24px' }} className='zip_code' placeholder="예) 12345" />
                         <AddButton style={{ margin: '12px auto 6px 12px', width: '104px' }} onClick={() => { setIsSeePostCode(!isSeePostCode) }}>우편번호검색</AddButton>
                     </div>
                 </Col>
                 <Row>
                     <Col>
                         <Title>주소</Title>
-                        <Input className='address'/>
+                        <Input className='address' />
                     </Col>
                     <Col>
                         <Title>상세주소</Title>

@@ -1,15 +1,28 @@
-import { commarNumber, dateFormat} from "../../functions/utils";
+import { BiEditAlt } from "react-icons/bi";
+import { commarNumber, dateFormat, getUserLevelByNumber } from "../../functions/utils";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { backUrl } from "../../data/Data";
+import { CgToggleOff, CgToggleOn } from "react-icons/cg";
+import theme from "../../styles/theme";
+import { GrLinkTop } from "react-icons/gr";
 
-export const returnColumn = (data_, type_, column_, schema) => {
+export const returnColumn = (data_, type_, column_, is_list, schema, func) => {
+    const {
+        navigate,
+        deleteItem,
+        changeStatus,
+        opTheTopItem
+    } = func;
     let data = { ...data_ };
     let type = type_;
     let column = column_;
     let result = "---";
-
     if (type == 'text') {
         result = data[`${column}`] ?? "---";
     } else if (type == 'number') {
         result = commarNumber(data[`${column}`] ?? 0);
+    } else if (type == 'level') {
+        result = getUserLevelByNumber(data[`${column}`] ?? 0);
     } else if (type == 'minus_number') {
         result = commarNumber((data[`${column}`] ?? 0) * (-1));
     } else if (type == 'date') {
@@ -28,28 +41,16 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else if (data[`${column}`] == 3) {
             result = "애플";
         }
-    } else if (type == 'level') {
-        if (data[`${column}`] == 0) {
-            result = "일반유저";
-        } else if (data[`${column}`] == 40) {
-            result = "관리자";
-        } else if (data[`${column}`] == 50) {
-            result = "개발자";
-        }
-    } else if (type == 'prider') {
-        if (data[`${column}`] == 0) {
-            result = "없음";
-        } else if (data[`${column}`] == 1) {
-            result = "그린리더";
-        } else if (data[`${column}`] == 2) {
-            result = "프라이더";
-        } else if (data[`${column}`] == 3) {
-            result = "로얄프라이더";
-        }
     } else if (type == 'img') {
         result = data[`${column}`];
+        if (is_list) {
+            result = <img alt={`${column}`} src={backUrl + data[`${column}`]} style={{ height: '5rem' }} />
+        }
     } else if (type == 'top') {
-        result = "맨위로";
+        result = "---";
+        if (is_list) {
+            result = <GrLinkTop style={{ color: '#aaaaaa', cursor: 'pointer' }} onClick={() => opTheTopItem(data.pk, data.sort, schema)} />
+        }
     } else if (type == 'target') {
         if (data[`${column}`] == 0) {
             result = "현재창";
@@ -62,11 +63,28 @@ export const returnColumn = (data_, type_, column_, schema) => {
         } else {
             result = "off";
         }
+        if (is_list) {
+            result = <>
+                {data[`${column}`] > 0 ?
+                    <CgToggleOn style={{ color: `${theme.color.background1}`, cursor: 'pointer', fontSize: '28px' }} onClick={() => { changeStatus(0, data.pk, column) }} /> :
+                    <CgToggleOff style={{ color: '#aaaaaa', cursor: 'pointer', fontSize: '28px' }} onClick={() => { changeStatus(1, data.pk, column) }} />}
+            </>
+        }
     } else if (type == 'alarm_type') {
         if (data[`${column}`] == 1) {
             result = "스케줄링";
+        } if (data[`${column}`] == 2) {
+            result = "예약발송";
         } else {
             result = "즉시실행";
+        }
+    } else if (type == 'request_status') {
+        if (data[`status`] == 0) {
+            result = "확인대기";
+        } if (data[`status`] == 1) {
+            result = "답변완료";
+        } else {
+            result = "---";
         }
     } else if (type == '---') {
         result = "---";
@@ -76,56 +94,18 @@ export const returnColumn = (data_, type_, column_, schema) => {
         result = data[`${column}`] < 0 ? "+" : "-";
     } else if (type == 'edit') {
         result = "---";
-    } else if (type == 'user_money_edit') {
-        result = "---";
-    } else if (type == 'user_marketing') {
-        result = "---";
-    } else if (type.includes('exchange')) {
-        data['explain_obj'] = JSON.parse(data['explain_obj']);
-        if (type.split('_')[1] == 'star') {
-            if (data[`explain_obj`]?.star) {
-                result = commarNumber(data[`explain_obj`]?.star);
-            } else {
-                result = "---";
-            }
-        } else if (type.split('_')[1] == 'money') {
-            if (data[`explain_obj`]?.star) {
-                result = commarNumber(data[`explain_obj`]?.star * 100);
-            } else {
-                result = "---";
-            }
-        } else if (type.split('_')[1] == 'moneycommission') {
-            if (data[`explain_obj`]?.star) {
-                result = commarNumber(data[`explain_obj`]?.star * data[`explain_obj`]?.withdraw_commission_percent / 100);
-            } else {
-                result = "---";
-            }
-        } else if (type.split('_')[1] == 'moneypayment') {
-            if (data[`explain_obj`]?.star) {
-                result = commarNumber(data[`explain_obj`]?.star * 100);
-            } else {
-                result = "---";
-            }
-        } else if (type.split('_')[1] == 'status') {
-            if (data?.status == -1) {
-                result = "반송";
-            } else if (data?.status == 0) {
-                result = "접수대기";
-            } else if (data?.status == 1) {
-                result = "접수완료";
-            } else if (data?.status == 2) {
-                result = "지급완료";
-            }
-        } else if (type.split('_')[1] == 'date') {
-            if (data[`explain_obj`]?.date) {
-                result = data['explain_obj']?.date;
-            } else {
-                result = "---";
-            }
-        } else if (type.split('_')[1] == 'edit') {
-            result = "---";
+        if (is_list) {
+            result = <BiEditAlt style={{ cursor: 'pointer', color: '#546de5', fontSize: '20px' }} onClick={() => navigate(`/manager/edit/${schema}/${data.pk}`)} />
         }
-
+    } else if (type == 'delete') {
+        result = "---";
+        if (is_list) {
+            result = <RiDeleteBinLine style={{ cursor: 'pointer', color: '#e15f41', fontSize: '20px' }} onClick={() => {
+                if (window.confirm("정말로 삭제하시겠습니까?")) {
+                    deleteItem(data.pk, schema)
+                }
+            }} />
+        }
     }
     return result;
 }

@@ -50,6 +50,7 @@
     "react-loader-spinner": "^5.3.4",
     "react-login-by-naver": "^0.1.8",
     "react-naver-maps": "0.0.13",
+    "react-organizational-chart": "^2.2.0",
     "react-quill": "^2.0.0",
     "react-quill-emoji": "^0.1.9",
     "react-redux": "^8.0.2",
@@ -68,6 +69,7 @@
     "recoil": "^0.7.6",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.5",
+    "sweetalert2": "^11.7.3",
     "tui-editor-plugin-font-size": "^1.0.4",
     "web-vitals": "^3.0.1",
     "xlsx": "^0.18.5"
