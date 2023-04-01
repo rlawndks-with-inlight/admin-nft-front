@@ -31,13 +31,13 @@ const Loading = (props) => {
             <LoadingContainer>
                 {onLine ?
                     <>
-                        {/* <img src={loadingGif} style={{ width: '100px' }} /> */}
-                        <img src={logoSrc} style={{ width: '100px', marginBottom:'16px' }} />
+                         <img src={loadingGif} style={{ width: '100px' }} /> 
+                        {/* <img src={logoSrc} style={{ width: '100px', marginBottom:'16px' }} />
                         <Circles
                         color={theme.color.background1}
                         height={'40'}
                         width={'40'}
-                        />
+                        /> */}
                         <div style={{ marginTop: '16px' }}>{text}</div>
                     </>
                     :
