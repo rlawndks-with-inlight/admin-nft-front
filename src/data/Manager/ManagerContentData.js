@@ -25,6 +25,7 @@ export const zSidebar = [
        sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
     ], <AiTwotoneSetting />),
     sidebarContentFormat('상품관리', [
+        sidebarObjListFormat('지갑관리', '/manager/list/wallet', 40, ['/manager/list/wallet']),//list
         sidebarObjListFormat('상품카테고리관리', '/manager/list/item_category', 40, ['/manager/list/item_category']),//list
         sidebarObjListFormat('상품속성관리', '/manager/list/item_property', 40, ['/manager/list/item_property']),//list
         sidebarObjListFormat('상품관리', '/manager/list/item', 40, ['/manager/list/item']),//list
@@ -104,6 +105,21 @@ export const objManagerListContent = {
         true,
         false,
         '100%'),
+        wallet: sidebarObjFormat(
+            '지갑 리스트',
+            'wallet',
+            [
+                columnObjFormat('메인이미지', '', 'img', 'img_src'),
+                columnObjFormat('지갑명', '', 'text', 'name'),
+                columnObjFormat('노출여부', '', 'status', 'status'),
+                columnObjFormat('생성일', '', 'text', 'date'),
+                columnObjFormat('수정', '', 'edit', 'edit'),
+                columnObjFormat('삭제', '', 'delete', 'delete'),
+            ],
+            [],
+            true,
+            false,
+            '100%'),
     user_statistics: sidebarObjFormat(
         '회원 통계',
         'user_statistics',
@@ -303,6 +319,19 @@ export const objManagerEditContent = {
             ],
         ],
     },
+    wallet: {
+        schema: 'wallet',
+        breadcrumb: '지갑',
+        add_list: [],
+        columns: [//img, select, input, 
+            [
+                editColumnObjFormat('메인이미지', 'img', { field_name: 'content' }, 'img_src'),
+            ],
+            [
+                editColumnObjFormat('지갑명', 'input', { placeholder: '지갑명을 입력해 주세요.' }, 'name'),
+            ],
+        ],
+    },
     item_property: {
         schema: 'item_property',
         breadcrumb: '상품속성',
@@ -452,31 +481,16 @@ export const objManagerEditContent = {
                 editColumnObjFormat('슬라이드 이미지 1 (500x150)', 'img', { field_name: 'content1' }, 'home_banner_img_1'),
             ],
             [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'home_banner_link_1'),
-            ],
-            [
                 editColumnObjFormat('슬라이드 이미지 2 (500x150)', 'img', { field_name: 'content2' }, 'home_banner_img_2'),
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'home_banner_link_2'),
             ],
             [
                 editColumnObjFormat('슬라이드 이미지 3 (500x150)', 'img', { field_name: 'content3' }, 'home_banner_img_3'),
             ],
             [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'home_banner_link_3'),
-            ],
-            [
                 editColumnObjFormat('슬라이드 이미지 4 (500x150)', 'img', { field_name: 'content4' }, 'home_banner_img_4'),
             ],
             [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'home_banner_link_4'),
-            ],
-            [
                 editColumnObjFormat('슬라이드 이미지 5 (500x150)', 'img', { field_name: 'content5' }, 'home_banner_img_5'),
-            ],
-            [
-                editColumnObjFormat('링크', 'input', { placeholder: '/home' }, 'home_banner_link_5'),
             ],
         ],
     },

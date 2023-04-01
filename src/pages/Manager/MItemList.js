@@ -212,7 +212,7 @@ const MItemList = () => {
         <>
             <Breadcrumb title={breadcrumbText} nickname={``} />
             <OptionBox 
-            schema={params.table} 
+            schema={params?.table} 
             onChangeType={onChangeType} 
             changePage={changePage} 
             onchangeSelectPageCut={onchangeSelectPageCut} 

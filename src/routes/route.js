@@ -15,6 +15,7 @@ import MSubscribeEdit from '../pages/Manager/MSubscribeEdit';
 import MPayEdit from '../pages/Manager/MPayEdit';
 import MPayCancelEdit from '../pages/Manager/MPayCancelEdit';
 import MPayExcelEdit from '../pages/Manager/MPayExcelEdit';
+import MProductEdit from '../pages/Manager/MProductEdit';
 
 const zManagerRoute = [
     { link: '/', element: <MLogin />, title: "관리자로그인" },
@@ -31,6 +32,7 @@ const zManagerRoute = [
     { link: '/manager/edit/feature_category/:pk', element: <MFeatureCategoryEdit />, title: "특징주카테고리관리" },
     { link: '/manager/edit/setting', element: <MSettingEdit />, title: "환경설정" },
     { link: '/manager/edit/pay_excel', element: <MPayExcelEdit />, title: "" },
+    { link: '/manager/edit/item', element: <MProductEdit />, title: "" },
     
     { link: '/manager/edit/:table/:pk', element: <MItemEdit />, title: "" },
     { link: '/manager/list/:table/:pk', element: <MItemList />, title: "" },
