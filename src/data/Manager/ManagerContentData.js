@@ -24,11 +24,11 @@ export const zSidebar = [
        sidebarObjListFormat('하단배너', '/manager/edit/home_bottom/1', 40, ['/manager/edit/home_bottom/1']),//list
        sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
     ], <AiTwotoneSetting />),
-    sidebarContentFormat('상품관리', [
+    sidebarContentFormat('NFT관리', [
         sidebarObjListFormat('지갑관리', '/manager/list/wallet', 40, ['/manager/list/wallet']),//list
-        sidebarObjListFormat('상품카테고리관리', '/manager/list/item_category', 40, ['/manager/list/item_category']),//list
-        sidebarObjListFormat('상품속성관리', '/manager/list/item_property', 40, ['/manager/list/item_property']),//list
-        sidebarObjListFormat('상품관리', '/manager/list/item', 40, ['/manager/list/item']),//list
+        sidebarObjListFormat('NFT카테고리관리', '/manager/list/item_category', 40, ['/manager/list/item_category']),//list
+        sidebarObjListFormat('NFT속성관리', '/manager/list/item_property', 40, ['/manager/list/item_property']),//list
+        sidebarObjListFormat('NFT관리', '/manager/list/item', 40, ['/manager/list/item']),//list
     ], <AiTwotoneSetting />),
     sidebarContentFormat('게시판관리', [
         sidebarObjListFormat('문의관리', '/manager/list/request', 40, ['/manager/list/request']),//list
@@ -61,7 +61,7 @@ export const objManagerListContent = {
         true,
         false),
     item_category: sidebarObjFormat(
-        '상품 카테고리 리스트',
+        'NFT 카테고리 리스트',
         'item_category',
         [
             columnObjFormat('메인이미지', '', 'img', 'img_src'),
@@ -76,7 +76,7 @@ export const objManagerListContent = {
         true,
     ),
     item_property: sidebarObjFormat(
-        '상품 속성 리스트',
+        'NFT 속성 리스트',
         'item_property',
         [
             columnObjFormat('속성명', '', 'text', 'name'),
@@ -90,11 +90,11 @@ export const objManagerListContent = {
         true,
     ),
     item: sidebarObjFormat(
-        '상품 리스트',
+        'NFT 리스트',
         'item',
         [
             columnObjFormat('메인이미지', '', 'img', 'img_src'),
-            columnObjFormat('상품명', '', 'text', 'name'),
+            columnObjFormat('NFT명', '', 'text', 'name'),
             columnObjFormat('카테고리명', '', 'text', 'category_name'),
             columnObjFormat('노출여부', '', 'status', 'status'),
             columnObjFormat('생성일', '', 'text', 'date'),
@@ -308,7 +308,7 @@ export const objManagerOptionCardContent = {
 export const objManagerEditContent = {
     item_category: {
         schema: 'item_category',
-        breadcrumb: '상품카테고리',
+        breadcrumb: 'NFT카테고리',
         add_list: [],
         columns: [//img, select, input, 
             [
@@ -334,7 +334,7 @@ export const objManagerEditContent = {
     },
     item_property: {
         schema: 'item_property',
-        breadcrumb: '상품속성',
+        breadcrumb: 'NFT속성',
         add_list: [],
         columns: [//img, select, input, 
             [
@@ -344,15 +344,15 @@ export const objManagerEditContent = {
     },
     item: {
         schema: 'item',
-        breadcrumb: '상품',
+        breadcrumb: 'NFT',
         add_list: [],
         columns: [//img, select, input, 
             [
                 editColumnObjFormat('메인이미지', 'img', { field_name: 'content' }, 'img_src'),
             ],
             [
-                editColumnObjFormat('상품명', 'input', { placeholder: '카테고리명을 입력해 주세요.' }, 'name'),
-                editColumnObjFormat('상품카테고리', 'select', {
+                editColumnObjFormat('NFT명', 'input', { placeholder: '카테고리명을 입력해 주세요.' }, 'name'),
+                editColumnObjFormat('NFT카테고리', 'select', {
                     api_url: '/api/items?table=item_category', option_list: [], use_name_column: 'name', use_val_column: 'pk'
                 }, 'category_pk'),
             ],

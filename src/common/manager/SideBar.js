@@ -159,7 +159,7 @@ const SideBar = () => {
                     <GiHamburgerMenu />
                 </HambergurContainer>
                 <LogoWrappers>
-                    <img src={logo} alt="first-academy" style={{ height: '40px', width: 'auto' }} />
+                    <img src={logo} alt="first-academy" style={{ height: '40px', width: 'auto' }} onClick={()=>navigate('/manager/list/user')} />
                 </LogoWrappers>
                 <div style={{ maxHeight: '80vh', paddingBottom: '32px' }}>
                     {zSidebar.map((list, index) => (
