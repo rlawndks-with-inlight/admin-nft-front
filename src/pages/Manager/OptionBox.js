@@ -77,18 +77,22 @@ const ReturnOptionContentBySchema = (props) => {
             setYearList(year_list);
         }
     }
-    const onChangeStatisticsType = (e) =>{
+    const onChangeStatisticsType = (e) => {
         setStatisticsType(e.target.value);
         onChangeType();
     }
-    const onChangeStatisticsYear = (e) =>{
+    const onChangeStatisticsYear = (e) => {
         $('.statistics_month').val(1);
+        onChangeType();
+    }
+    const onClickLevel = (num) => {
+        $('.level').val(num);
         onChangeType();
     }
     if (schema == 'user') {
         return (
             <>
-            <Select className='level' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
+                <Select className='level' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
                     <option value={'all'}>전체유저</option>
                     <option value={-10}>불량회원</option>
                     <option value={0}>일반유저</option>
@@ -98,6 +102,12 @@ const ReturnOptionContentBySchema = (props) => {
                     <option value={15}>총판</option>
                     <option value={10}>대리점</option>
                 </Select>
+                <RowContent>
+                    <AddButton style={{ margin: '0 0 0 0' }} onClick={() => { onClickLevel(25)}}>본사</AddButton>
+                    <AddButton style={{ margin: '0 0 0 12px' }} onClick={() => { onClickLevel(20)}}>지사</AddButton>
+                    <AddButton style={{ margin: '0 0 0 12px' }} onClick={() => { onClickLevel(15)}}>총판</AddButton>
+                    <AddButton style={{ margin: '0 0 0 12px' }} onClick={() => { onClickLevel(10)}}>대리점</AddButton>
+                </RowContent>
             </>
         )
     }
