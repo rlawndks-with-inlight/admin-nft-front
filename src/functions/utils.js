@@ -157,7 +157,7 @@ export const getUserLevelByNumber = (num) => {
     if (num == -10) {
         return "불량회원";
     } else if (num == 0) {
-        return "일반유저";
+        return "일반회원";
     } else if (num == 10) {
         return "대리점";
     } else if (num == 15) {

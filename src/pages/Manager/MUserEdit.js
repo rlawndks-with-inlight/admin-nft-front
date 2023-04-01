@@ -224,7 +224,7 @@ const MUserEdit = () => {
                         <Select className='level'
                             onChange={(e) => setUserLevel(e.target.value)}
                         >
-                            <option value={0}>일반유저</option>
+                            <option value={0}>일반회원</option>
                             <option value={40}>관리자</option>
                             <option value={25}>본사</option>
                             <option value={20}>지사</option>

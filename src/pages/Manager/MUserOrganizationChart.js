@@ -67,10 +67,8 @@ const MUserOrganizationChart = () => {
                 tree_list[i] = {};
             }
             setTreeList([...tree_list]);
-            setTopUser({
-                pk: 0,
-                depth: -1
-            })
+            console.log(response?.data?.data[0][0][0])
+            setTopUser(response?.data?.data[0][0][0])
             setAllTreeList(response?.data?.data ?? []);
         }
         fetchPosts();
@@ -90,7 +88,7 @@ const MUserOrganizationChart = () => {
         } else {
             return (getChildByUserPk(pk, depth) && getChildByUserPk(pk, depth).map((item, idx) => (
                 <>
-                    <TreeNode label={<StyledNode style={{ cursor: 'pointer', border: `1px solid ${(allTreeList[item?.depth + 1][item?.pk] && allTreeList[item?.depth + 1][item?.pk].length > 0) ? `${theme.color.background1}` : `${theme.color.red}`}` }} onClick={() => { onClickUser(item?.pk, item?.depth) }}>
+                    <TreeNode label={<StyledNode style={{ cursor: 'pointer', border: `2px solid ${(allTreeList[item?.depth + 1][item?.pk] && allTreeList[item?.depth + 1][item?.pk].length > 0) ? `${theme.color.background1}` : `${theme.color.red}`}`, minWidth: '54px' }} onClick={() => { onClickUser(item?.pk, item?.depth) }}>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.id}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${item?.name}`}</div>
                         <div style={{ fontSize: theme.size.font5 }}>{`${getUserLevelByNumber(item?.user_level)}`}</div>
@@ -153,9 +151,9 @@ const MUserOrganizationChart = () => {
     return (
         <>
             <Breadcrumb title={`회원 조직도`} nickname={``} />
-            <div style={{ width: '100%', overflowX: 'scroll', marginTop: '0.5rem', minHeight: '90vh' }} className='scroll-table-green'>
+            <div style={{ width: '100%', overflowX: 'scroll', minHeight: '90vh', marginTop: '3.5rem' }} className='scroll-table-green'>
                 <OneCard style={{ position: 'fixed', background: '#fff', zIndex: '10', right: '2rem', top: `${window.innerWidth >= 700 ? '8rem' : '4rem'}`, height: '30px', opacity: '0.8', flexDirection: 'row', alignItems: 'center', width: '180px', justifyContent: 'space-between', padding: '8px' }}>
-                    <div style={{ fontSize: theme.size.font5, width: '50px' }}>추천계보</div>
+                    <div style={{ fontSize: theme.size.font5, width: '50px' }}>조직도</div>
                     <Select style={{ margin: '0', width: '100px' }} className='down-level' onChange={onChangeDownLevel}>
                         {range(1, 10) && range(1, 10).map((item, idx) => (
                             <>
@@ -166,11 +164,13 @@ const MUserOrganizationChart = () => {
                     </Select>
                 </OneCard>
                 <Tree
-                    lineWidth={'2px'}
+                    lineWidth={'1px'}
                     lineColor={theme.color.background1}
                     lineBorderRadius={'10px'}
-                    label={<StyledNode style={{ cursor: 'pointer' }} onClick={() => { onClickUser(topUser?.pk, topUser?.depth) }}>
-                        <div style={{ fontSize: theme.size.font5 }}>{`조직도`}</div>
+                    label={<StyledNode style={{ cursor: 'pointer', border: `2px solid ${(allTreeList[topUser?.depth + 1][topUser?.pk] && allTreeList[topUser?.depth + 1][topUser?.pk].length > 0) ? `${theme.color.background1}` : `${theme.color.red}`}`, minWidth: '54px' }} onClick={() => { onClickUser(topUser?.pk, topUser?.depth) }}>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${topUser?.id}`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${topUser?.name}`}</div>
+                        <div style={{ fontSize: theme.size.font5 }}>{`${getUserLevelByNumber(topUser?.user_level)}`}</div>
                     </StyledNode>}
                 >
                     {tree}

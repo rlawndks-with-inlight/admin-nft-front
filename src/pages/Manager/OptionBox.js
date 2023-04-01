@@ -95,7 +95,7 @@ const ReturnOptionContentBySchema = (props) => {
                 <Select className='level' style={{ margin: '12px 24px 12px 24px' }} onChange={onChangeType}>
                     <option value={'all'}>전체유저</option>
                     <option value={-10}>불량회원</option>
-                    <option value={0}>일반유저</option>
+                    <option value={0}>일반회원</option>
                     <option value={40}>관리자</option>
                     <option value={25}>본사</option>
                     <option value={20}>지사</option>
@@ -107,6 +107,7 @@ const ReturnOptionContentBySchema = (props) => {
                     <AddButton style={{ margin: '0 0 0 12px' }} onClick={() => { onClickLevel(20)}}>지사</AddButton>
                     <AddButton style={{ margin: '0 0 0 12px' }} onClick={() => { onClickLevel(15)}}>총판</AddButton>
                     <AddButton style={{ margin: '0 0 0 12px' }} onClick={() => { onClickLevel(10)}}>대리점</AddButton>
+                    <AddButton style={{ margin: '0 0 0 12px',width:'72px' }} onClick={() => { onClickLevel(0)}}>일반회원</AddButton>
                 </RowContent>
             </>
         )
