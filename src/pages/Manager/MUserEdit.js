@@ -47,7 +47,6 @@ const MUserEdit = () => {
     const [myNick, setMyNick] = useState("")
     const [url, setUrl] = useState('')
     const [content, setContent] = useState(undefined)
-    const [formData] = useState(new FormData())
     const [addressList, setAddressList] = useState([])
     const [isSelectAddress, setIsSelectAddress] = useState(false);
     const [managerNote, setManagerNote] = useState("");
@@ -80,46 +79,7 @@ const MUserEdit = () => {
         $('.ql-editor').attr('style', 'max-height:300px !important');
         $('.ql-editor').attr('style', 'min-height:300px !important');
     }
-    const modules = useMemo(() => ({
-        toolbar: {
-            container: [
-                [
-                    { header: [1, 2, 3, 4, 5, 6] },
-                    { font: [] }
-                ],
-                [{ size: [] }],
-                [{ color: [] }, { background: [] }],
-                ["bold", "italic", "underline", "strike", "blockquote", "regular"],
-                [{ align: [] }],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["link", "image", "video"],
-                ["emoji"],
-                ["clean"],
-                ["code-block"]
-            ],
-        },
-        "emoji-toolbar": true,
-        "emoji-textarea": true,
-        "emoji-shortname": true
-    }), [])
-    const formats = [
-        'font',
-        'header',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image',
-        'align', 'color', 'background',
-    ]
-    Quill.register("modules/imageResize", ImageResize);
-    Quill.register(
-        {
-            "formats/emoji": quillEmoji.EmojiBlot,
-            "modules/emoji-toolbar": quillEmoji.ToolbarEmoji,
-            "modules/emoji-textarea": quillEmoji.TextAreaEmoji,
-            "modules/emoji-shortname": quillEmoji.ShortNameEmoji
-        },
-        true
-    );
+
     const editUser = async () => {
         if (!$(`.id`).val() || !$(`.name`).val() || !$(`.nickname`).val() || !$(`.phone`).val() || (!$(`.pw`).val() && params.pk == 0)) {
             alert('필요값이 비어있습니다.');
@@ -152,6 +112,7 @@ const MUserEdit = () => {
         if (params?.pk > 0) {
             obj['pk'] = params.pk;
         }
+
         Swal.fire({
             title: `${params.pk == 0 ? '추가하시겠습니까?' : '수정하시겠습니까?'}`,
             showCancelButton: true,
@@ -159,12 +120,17 @@ const MUserEdit = () => {
             cancelButtonText: '취소'
         }).then(async (result) => {
             if (result.isConfirmed) {
+                let formData = new FormData();
+                let keys = Object.keys(obj);
+                for (var i = 0; i < keys.length; i++) {
+                    formData.append(keys[i], obj[keys[i]]);
+                }
                 const { data: response } = await axios.post(`/api/${params?.pk == 0 ? 'add' : 'update'}user`, obj);
                 if (response?.result > 0) {
-                    alert(response.message);
+                    toast.success(response.message);
                     navigate(-1);
                 } else {
-                    alert(response.message);
+                    toast.error(response.message);
                 }
             }
         })
@@ -181,6 +147,12 @@ const MUserEdit = () => {
             alert(response?.message);
         }
     }
+    const addFile = (e) => {
+        if (e.target.files[0]) {
+            setContent(e.target.files[0]);
+            setUrl(URL.createObjectURL(e.target.files[0]))
+        }
+    };
     const onSelectAddress = (data) => {
         setIsSeePostCode(false);
         $('.address').val(data?.address);

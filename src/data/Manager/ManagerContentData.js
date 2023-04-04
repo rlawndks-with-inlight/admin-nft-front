@@ -113,6 +113,7 @@ export const objManagerListContent = {
         [
             columnObjFormat('메인이미지', '', 'img', 'img_src'),
             columnObjFormat('지갑명', '', 'text', 'name'),
+            columnObjFormat('단위명', '', 'text', 'unit'),
             columnObjFormat('노출여부', '', 'status', 'status'),
             columnObjFormat('생성일', '', 'text', 'date'),
             columnObjFormat('수정', '', 'edit', 'edit'),
@@ -332,6 +333,9 @@ export const objManagerEditContent = {
             [
                 editColumnObjFormat('지갑명', 'input', { placeholder: '지갑명을 입력해 주세요.' }, 'name'),
             ],
+            [
+                editColumnObjFormat('금액단위', 'input', { placeholder: '단위명을 입력해 주세요.' }, 'unit'),
+            ],
         ],
     },
     item_property: {
@@ -354,12 +358,25 @@ export const objManagerEditContent = {
             ],
             [
                 editColumnObjFormat('NFT명', 'input', { placeholder: '카테고리명을 입력해 주세요.' }, 'name'),
+                editColumnObjFormat('지갑명', 'select', {
+                    api_url: '/api/items?table=wallet', option_list: [], use_name_column: 'name', use_val_column: 'pk'
+                }, 'wallet_pk'),
                 editColumnObjFormat('NFT카테고리', 'select', {
                     api_url: '/api/items?table=item_category', option_list: [], use_name_column: 'name', use_val_column: 'pk'
                 }, 'category_pk'),
             ],
             [
-                editColumnObjFormat('설명', 'editor', {}, 'note'),
+                editColumnObjFormat('속성선택', 'multi_check', {
+                    api_url: '/api/items?table=item_property', option_list: [], use_name_column: 'name', use_val_column: 'pk'
+                }, 'property_list'),
+
+            ],
+            [
+                editColumnObjFormat('가격', 'input', { placeholder: '숫자만 입력해 주세요.', type: 'number' }, 'price'),
+
+            ],
+            [
+                editColumnObjFormat('설명', 'textarea', {}, 'note'),
             ],
         ],
     },

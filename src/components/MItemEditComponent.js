@@ -16,6 +16,8 @@ import "react-quill/dist/quill.snow.css";
 import quillEmoji from "react-quill-emoji";
 import "react-quill-emoji/dist/quill-emoji.css";
 import { useMemo } from 'react';
+import Swal from 'sweetalert2';
+import { toast } from 'react-hot-toast';
 const Font = ReactQuill.Quill.import('formats/font');
 const MItemEditComponent = (props) => {
     const { editContent, schema, params_pk, add_list, breadcrumb, editItemByParent } = props;
@@ -80,7 +82,7 @@ const MItemEditComponent = (props) => {
         for (var i = 0; i < objManagerEditContent[schema].columns.length; i++) {
             for (var j = 0; j < objManagerEditContent[schema].columns[i].length; j++) {
                 let content = objManagerEditContent[schema].columns[i][j];
-                if (content.type == 'select') {
+                if (content.type == 'select' || content.type == 'multi_check') {
                     if (content?.type_option?.api_url) {
                         const { data: response } = await axios.get(content?.type_option?.api_url);
                         let option_list = [...response.data].map(item => {
@@ -122,6 +124,15 @@ const MItemEditComponent = (props) => {
                             $(`.${content.class_name}`).val(item[`${content.class_name}`]);
                         }, 500);
                     }
+                    if (content.type == 'multi_check') {
+                        setTimeout(function () {
+                            let list = JSON.parse(item[`${content.class_name}`]);
+                            for(var i = 0;i<list.length;i++){
+                              $(`#${content.class_name}-${list[i]}`).prop('checked',true);
+                            }
+                        }, 500);
+                        console.log(item[`${content.class_name}`])
+                    }
                     if (content.type == 'input') {
                         if (content?.type_option?.type == 'password') {
                         } else {
@@ -130,6 +141,7 @@ const MItemEditComponent = (props) => {
                             }, 500);
                         }
                     }
+
                     if (content.type == 'textarea') {
                         setTimeout(function () {
                             $(`.${content.class_name}`).val(item[`${content.class_name}`]);
@@ -171,77 +183,97 @@ const MItemEditComponent = (props) => {
 
     const editItem = async () => {
         try {
-            if (window.confirm('저장 하시겠습니까?')) {
-                let formData = new FormData();
-                let obj = {};
-                let img_count = 0;
-                let key_field_connect_obj = {};
-                for (var i = 0; i < objManagerEditContent[schema].columns.length; i++) {
-                    for (var j = 0; j < objManagerEditContent[schema].columns[i].length; j++) {
-                        let content = objManagerEditContent[schema].columns[i][j];
-                        if (content.type == 'img' && imgContentObj[`${content?.class_name}`]) {
-                            key_field_connect_obj[content?.type_option?.field_name] = content.class_name;
-                            await formData.append(`${content?.type_option?.field_name}`, imgContentObj[`${content?.class_name}`]);
-                            img_count++;
-                        } else if (content.type == 'img' && imgUrlObj[`${content?.class_name}`] == -1) {//초기화시
-                            obj[content.class_name] = '';
-                        } else if (content.type == 'input') {
-                            if ($(`.${content.class_name}`).val()) {
+            Swal.fire({
+                title: '저장 하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonText: '확인',
+                cancelButtonText: '취소'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    let obj = {};
+                    let img_count = 0;
+                    let key_field_connect_obj = {};
+                    for (var i = 0; i < objManagerEditContent[schema].columns.length; i++) {
+                        for (var j = 0; j < objManagerEditContent[schema].columns[i].length; j++) {
+                            let content = objManagerEditContent[schema].columns[i][j];
+                            if (content.type == 'img' && imgContentObj[`${content?.class_name}`]) {
+                                key_field_connect_obj[content?.type_option?.field_name] = content.class_name;
+                                await formData.append(`${content?.type_option?.field_name}`, imgContentObj[`${content?.class_name}`]);
+                                img_count++;
+                            } else if (content.type == 'img' && imgUrlObj[`${content?.class_name}`] == -1) {//초기화시
+                                obj[content.class_name] = '';
+                            } else if (content.type == 'input') {
+                                if ($(`.${content.class_name}`).val()) {
+                                    obj[content.class_name] = $(`.${content.class_name}`).val();
+                                }
+                            } else if (content.type == 'textarea') {
                                 obj[content.class_name] = $(`.${content.class_name}`).val();
+                            } else if (content.type == 'select') {
+                                obj[content.class_name] = $(`.${content.class_name}`).val() ?? optionListObj[content.class_name][0]['val'];
+                            } else if (content.type == 'multi_check') {
+                                let list = optionListObj[content.class_name].map(item => {
+                                    return item?.val
+                                })
+                                let ans_list = [];
+                                for (var i = 0; i < list.length; i++) {
+                                    if ($(`#${content.class_name}-${list[i]}`).is(':checked')) {
+                                        ans_list.push(list[i])
+                                    }
+                                }
+                                obj[content.class_name] = JSON.stringify(ans_list);
+
+                            } else if (content.type == 'editor') {
+                                obj[content.class_name] = editorListObj[`${content.class_name}`];
+                            } else if (content.type == 'pdf' && imgContentObj[`${content?.class_name}`]) {
+                                key_field_connect_obj[content?.type_option?.field_name] = content.class_name;
+                                await formData.append(`${content?.type_option?.field_name}`, imgContentObj[`${content?.class_name}`]);
+                                img_count++;
+                            } else if (content.type == 'pdf' && imgUrlObj[`${content?.class_name}`] == -1) {//초기화시
+                                obj[content.class_name] = '';
                             }
-                        } else if (content.type == 'textarea') {
-                            obj[content.class_name] = $(`.${content.class_name}`).val();
-                        } else if (content.type == 'select') {
-                            obj[content.class_name] = $(`.${content.class_name}`).val() ?? optionListObj[content.class_name][0]['val'];
-                        } else if (content.type == 'editor') {
-                            obj[content.class_name] = editorListObj[`${content.class_name}`];
-                        } else if (content.type == 'pdf' && imgContentObj[`${content?.class_name}`]) {
-                            key_field_connect_obj[content?.type_option?.field_name] = content.class_name;
-                            await formData.append(`${content?.type_option?.field_name}`, imgContentObj[`${content?.class_name}`]);
-                            img_count++;
-                        } else if (content.type == 'pdf' && imgUrlObj[`${content?.class_name}`] == -1) {//초기화시
-                            obj[content.class_name] = '';
                         }
                     }
-                }
-                if (img_count > 0) {
-                    const { data: response_img } = await axios.post('/api/addimageitems', formData);
-                    let img_list = [...response_img?.data];
-                    for (var i = 0; i < img_list.length; i++) {
-                        obj[key_field_connect_obj[img_list[i]['key']]] = img_list[i]['filename'];
+                    if (img_count > 0) {
+                        const { data: response_img } = await axios.post('/api/addimageitems', formData);
+                        let img_list = [...response_img?.data];
+                        for (var i = 0; i < img_list.length; i++) {
+                            obj[key_field_connect_obj[img_list[i]['key']]] = img_list[i]['filename'];
+                        }
+                    }
+                    let api_str = "";
+                    obj['table'] = objManagerEditContent[schema].schema;
+                    if (add_list && params_pk == 0) {
+                        for (var i = 0; i < add_list.length; i++) {
+                            obj[add_list[i]?.key] = add_list[i]?.value;
+                        }
+                    }
+                    if (objManagerEditContent[schema]?.add_list && objManagerEditContent[schema]?.add_list?.length > 0 && params_pk == 0) {
+                        for (var i = 0; i < objManagerEditContent[schema]?.add_list.length; i++) {
+                            obj[objManagerEditContent[schema]?.add_list[i]?.key] = objManagerEditContent[schema]?.add_list[i]?.value;
+                        }
+                    }
+                    if (objManagerEditContent[schema]?.update_list && objManagerEditContent[schema]?.update_list?.length > 0 && params_pk > 0) {
+                        for (var i = 0; i < objManagerEditContent[schema]?.update_list.length; i++) {
+                            obj[objManagerEditContent[schema]?.update_list[i]?.key] = objManagerEditContent[schema]?.update_list[i]?.value;
+                        }
+                    }
+                    if (params_pk == 0) {
+                        api_str = "/api/additem";
+                    } else {
+                        api_str = "/api/updateitem";
+                        obj['pk'] = params_pk;
+                    }
+                    const { data: response_item } = await axios.post(api_str, obj);
+                    if (response_item.result > 0) {
+                        toast.success("성공적으로 저장 되었습니다.");
+                        navigate(-1);
+                    } else {
+                        toast.error(response_item?.message);
                     }
                 }
-                let api_str = "";
-                obj['table'] = objManagerEditContent[schema].schema;
-                if (add_list && params_pk == 0) {
-                    for (var i = 0; i < add_list.length; i++) {
-                        obj[add_list[i]?.key] = add_list[i]?.value;
-                    }
-                }
-                if (objManagerEditContent[schema]?.add_list && objManagerEditContent[schema]?.add_list?.length > 0 && params_pk == 0) {
-                    for (var i = 0; i < objManagerEditContent[schema]?.add_list.length; i++) {
-                        obj[objManagerEditContent[schema]?.add_list[i]?.key] = objManagerEditContent[schema]?.add_list[i]?.value;
-                    }
-                }
-                if (objManagerEditContent[schema]?.update_list && objManagerEditContent[schema]?.update_list?.length > 0 && params_pk > 0) {
-                    for (var i = 0; i < objManagerEditContent[schema]?.update_list.length; i++) {
-                        obj[objManagerEditContent[schema]?.update_list[i]?.key] = objManagerEditContent[schema]?.update_list[i]?.value;
-                    }
-                }
-                if (params_pk == 0) {
-                    api_str = "/api/additem";
-                } else {
-                    api_str = "/api/updateitem";
-                    obj['pk'] = params_pk;
-                }
-                const { data: response_item } = await axios.post(api_str, obj);
-                if (response_item.result > 0) {
-                    alert("성공적으로 저장 되었습니다.");
-                    navigate(-1);
-                } else {
-                    alert(response_item?.message);
-                }
-            }
+            })
+
 
         } catch (err) {
             console.log(err);
@@ -307,6 +339,22 @@ const MItemEditComponent = (props) => {
                                                                 <option value={option_item?.val}>{option_item?.name}</option>
                                                             ))}
                                                         </Select>
+                                                    </>
+                                                    :
+                                                    <>
+                                                    </>}
+                                                {item.type == 'multi_check' ?
+                                                    <>
+                                                        <Row style={{ margin: '1rem auto 1rem 24px' }}>
+                                                            {optionListObj[`${item.class_name}`] && optionListObj[`${item.class_name}`]?.map((option_item, idx) => (
+                                                                <div>
+                                                                    <input id={`${item.class_name}-${option_item?.val}`} type={'checkbox'} />
+                                                                    <label for={`${item.class_name}-${option_item?.val}`}>
+                                                                        {option_item?.name}
+                                                                    </label>
+                                                                </div>
+                                                            ))}
+                                                        </Row>
                                                     </>
                                                     :
                                                     <>
