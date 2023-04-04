@@ -58,6 +58,7 @@ const MUserEdit = () => {
         async function fetchPost() {
             if (params.pk > 0) {
                 const { data: response } = await axios.get(`/api/item?table=user&pk=${params.pk}`)
+                console.log(response)
                 $('.id').val(response.data.id)
                 $('.pw').val("")
                 $('.name').val(response.data.name)

@@ -23,6 +23,7 @@ export const zSidebar = [
         // sidebarObjListFormat('상단띠배너', '/manager/edit/common_setting/1', 40, ['/manager/edit/common_setting/1']),//list
         sidebarObjListFormat('메인배너', '/manager/edit/home_setting/1', 40, ['/manager/edit/home_setting/1']),//list
         sidebarObjListFormat('하단배너', '/manager/edit/home_bottom/1', 40, ['/manager/edit/home_bottom/1']),//list
+        sidebarObjListFormat('문의배너', '/manager/edit/request_banner/1', 40, ['/manager/edit/request_banner/1']),//list
         sidebarObjListFormat('팝업관리', '/manager/list/popup', 40, ['/manager/list/popup']),//list
     ], <AiTwotoneSetting />),
     sidebarContentFormat('NFT관리', [
@@ -403,22 +404,6 @@ export const objManagerEditContent = {
             ],
         ],
     },
-    main_video: {
-        schema: 'main_video',
-        breadcrumb: '메인비디오',
-        add_list: [],
-        columns: [//img, select, input, 
-            [
-                editColumnObjFormat('제목', 'input', { placeholder: '제목을 입력해 주세요.' }, 'title'),
-                editColumnObjFormat('부제목', 'input', { placeholder: '부제목을 입력해 주세요.' }, 'sub_title'),
-            ],
-            [
-                editColumnObjFormat('자세히보기링크', 'input', { placeholder: '' }, 'link'),
-                editColumnObjFormat('유튜브링크', 'input', { placeholder: 'https://www.youtube.com/watch?v=9kaCAbIXuyg&list=RDVWbYRiF44Dc&index=2' }, 'video_link'),
-                editColumnObjFormat('더많은 영상보기 링크', 'input', { placeholder: '' }, 'more_link'),
-            ],
-        ],
-    },
     request: {
         schema: 'request',
         breadcrumb: '문의',
@@ -526,6 +511,16 @@ export const objManagerEditContent = {
             ],
             [
                 editColumnObjFormat('홈 아래 이미지 3 (500x500)', 'img', { field_name: 'content3' }, 'home_bottom_img_3')
+            ],
+        ],
+    },
+    request_banner: {
+        schema: 'setting',
+        breadcrumb: '문의 배너',
+        add_list: [],
+        columns: [//img, select, input, 
+            [
+                editColumnObjFormat('문의배너 (500x500)', 'img', { field_name: 'content1' }, 'request_banner_img')
             ],
         ],
     },
